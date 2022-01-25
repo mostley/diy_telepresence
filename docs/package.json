@@ -4,7 +4,7 @@
   "description": "",
   "main": "serial.js",
   "scripts": {
-    "start": "browser-sync src -w"
+    "start": "browser-sync src -w --https"
   },
   "author": "",
   "license": "ISC",

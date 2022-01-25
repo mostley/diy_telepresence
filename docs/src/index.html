@@ -2,9 +2,7 @@
 <html>
   <head>
     <title>Telepresence</title>
-    <script src="js/hterm_all.js"></script>
-    <script src="js/serial.js"></script>
-    <script src="js/console.js"></script>
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
   </head>
   <body>
     <h1>Telepresence</h1>
@@ -12,5 +10,9 @@
       <button id="connect">Connect</button>
     </p>
     <div id="terminal" style="position: relative; width: 100%; height: 100%"></div>
+
+    <script src="js/hterm_all.js"></script>
+    <script src="js/serial.js"></script>
+    <script src="js/console.js"></script>
   </body>
 </html>
