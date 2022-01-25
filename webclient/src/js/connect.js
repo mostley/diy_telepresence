@@ -87,13 +87,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   getCallButton().addEventListener('click', initiateCall);
 
-  getPeerVideoElement().onloadedmetadata = function () {
-    this.play();
-  };
-  getLocalVideoElement().onloadedmetadata = function () {
-    this.play();
-  };
-
   localStream = await requestLocalVideo();
 
   peer.on('open', function () {
