@@ -22,6 +22,7 @@
       <button id="remote-pan-right-button">right</button>
       <button id="remote-tilt-up-button">up</button>
       <button id="remote-tilt-down-button">down</button>
+      <button id="hangup-button">hangup</button>
     </p>
     <div id="terminal" style="position: relative; width: 100%; height: 100%"></div>
     <video id="peer-video-element" autoplay="autoplay"></video>
@@ -42,6 +43,10 @@
       const connectionManager = new ConnectionManager();
       const uiManager = new UIManager();
 
+      window.addEventListener('beforeunload', async () => {
+        await connectionManager.hangup();
+      });
+
       connectionManager.init();
       connectionManager.addEventListener('local-peer-id-received', (peerId) => {
         uiManager.showPeerId(peerId);
@@ -55,6 +60,7 @@
 
       uiManager.addEventListener('connect-button-clicked', () => serialManager.userRequestConnection());
       uiManager.addEventListener('call-button-clicked', () => connectionManager.initiateCall());
+      uiManager.addEventListener('hangup-button-clicked', () => connectionManager.hangup());
       uiManager.addEventListener('username-changed', (value) => connectionManager.setUsername(value));
       uiManager.addEventListener('peer-id-changed', (value) => connectionManager.setPeerId(value));
 
@@ -71,10 +77,12 @@
           [MessageType.TiltUp]: CommandByteCode.TiltUp,
           [MessageType.TiltDown]: CommandByteCode.TiltDown,
         };
-        connectionManager.addEventListener('message-received', (message) => {
+        connectionManager.addEventListener('message-received', async (message) => {
           const commandByteCode = messageToCommandMap[message];
           if (commandByteCode) {
-            serialManager.sendCommand(commandByteCode);
+            await serialManager.sendCommand(commandByteCode);
+          } else if (message == MessageType.Hangup) {
+            await connectionManager.hangup();
           }
         });
       } else {

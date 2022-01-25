@@ -13,16 +13,17 @@ export class UIManager extends EventBase {
 
     this.connectButton = document.getElementById('connect-button');
     this.callButton = document.getElementById('call-button');
+    this.hangupButton = document.getElementById('hangup-button');
     this.remotePanRightButton = document.getElementById('remote-pan-right-button');
     this.remotePanLeftButton = document.getElementById('remote-pan-left-button');
     this.remoteTiltUpButton = document.getElementById('remote-tilt-up-button');
     this.remoteTiltDownButton = document.getElementById('remote-tilt-down-button');
 
-    this.peerIdInput.addEventListener('keyup', (event) => {
+    this.peerIdInput.addEventListener('keyup', () => {
       this.triggerEvent('peer-id-changed', this.peerIdInput.value);
     });
 
-    this.usernameInput.addEventListener('keyup', (event) => {
+    this.usernameInput.addEventListener('keyup', () => {
       this.triggerEvent('username-changed', this.usernameInput.value);
     });
 
@@ -32,6 +33,9 @@ export class UIManager extends EventBase {
 
     this.callButton.addEventListener('click', () => {
       this.triggerEvent('call-button-clicked');
+    });
+    this.hangupButton.addEventListener('click', () => {
+      this.triggerEvent('hangup-button-clicked');
     });
 
     this.remotePanRightButton.addEventListener('click', () => {

@@ -1,6 +1,7 @@
 import { EventBase } from './event.js';
 
 export const MessageType = {
+  Hangup: 'HANGUP',
   PanLeft: 'PAN_LEFT',
   PanRight: 'PAN_RIGHT',
   TiltUp: 'TILT_UP',
@@ -42,7 +43,7 @@ export class ConnectionManager extends EventBase {
   }
 
   sendMessage(message) {
-    this.connection.send(message);
+    return this.connection.send(message);
   }
 
   async init() {
@@ -125,6 +126,19 @@ export class ConnectionManager extends EventBase {
       this.triggerEvent('local-stream-received', this.localStream);
     } catch (err) {
       console.error('Failed to get local stream', err);
+    }
+  }
+
+  async hangup() {
+    console.log('[ConnectionManager] hangup');
+
+    await this.sendMessage(MessageType.Hangup);
+    this.peer.disconnect();
+    if (this.connection) {
+      this.connection.close();
+    }
+    if (this.peerStream) {
+      this.peerStream.getTracks().forEach((track) => track.stop());
     }
   }
 }
