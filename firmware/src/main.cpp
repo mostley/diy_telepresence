@@ -15,8 +15,10 @@ WebUSB WebUSBSerial(1 /* https:// */, "webusb.github.io/arduino/demos/rgb");
 #define Serial WebUSBSerial
 #define LED_PIN 13
 #define PAN_SERVO_PIN 8
+#define TILT_SERVO_PIN 9
 
 Servo panServo;
+Servo tiltServo;
 
 void setup() {
   while (!Serial) {
@@ -29,6 +31,7 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
 
   panServo.attach(PAN_SERVO_PIN);
+  tiltServo.attach(TILT_SERVO_PIN);
 }
 
 void loop() {
@@ -38,18 +41,24 @@ void loop() {
     int byte = Serial.read();
     Serial.write(byte);
 
-    if (byte == 'h') {
+    if (byte == '1') {
       Serial.write("\r\nTurning LED on.");
       digitalWrite(LED_PIN, HIGH);
-    } else if (byte == 'l') {
+    } else if (byte == '0') {
       Serial.write("\r\nTurning LED off.");
       digitalWrite(LED_PIN, LOW);
     } else if (byte == 'r') {
       Serial.write("\r\nTurning Pan Servo right.");
       panServo.write(180);
-    } else if (byte == 'e') {
+    } else if (byte == 'l') {
       Serial.write("\r\nTurning Pan Servo left.");
       panServo.write(0);
+    } else if (byte == 'u') {
+      Serial.write("\r\nTurning Tilt Servo up.");
+      tiltServo.write(180);
+    } else if (byte == 'd') {
+      Serial.write("\r\nTurning Tilt Servo down.");
+      tiltServo.write(0);
     }
 
     Serial.write("\r\n> ");

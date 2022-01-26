@@ -66,7 +66,14 @@ if (isRobotUser) {
     [MessageType.TiltDown]: CommandByteCode.TiltDown,
   };
 
-  uiManager.addEventListener('connect-button-clicked', () => serialManager.userRequestConnection());
+  serialManager.addEventListener('connected', () => {
+    uiManager.showRobotConnected();
+  });
+  serialManager.addEventListener('disconnected', () => {
+    uiManager.showRobotDisconnected();
+  });
+
+  uiManager.addEventListener('connect-robot-button-clicked', () => serialManager.userRequestConnection());
   connectionManager.addEventListener('message-received', async (message) => {
     const commandByteCode = messageToCommandMap[message];
 

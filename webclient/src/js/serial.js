@@ -1,3 +1,5 @@
+import { EventBase } from './event.js';
+
 export const CommandByteCode = {
   PanLeft: 'l',
   PanRight: 'r',
@@ -89,11 +91,13 @@ export class Port {
   }
 }
 
-export class SerialManager {
+export class SerialManager extends EventBase {
   currentPort = null;
   textEncoder;
 
   constructor() {
+    super();
+
     this.textEncoder = new TextEncoder();
   }
 
@@ -192,6 +196,8 @@ export class SerialManager {
       console.log('[Serial] onReceiveError', error);
     };
 
+    this.triggerEvent('connected');
+
     return true;
   }
 
@@ -210,6 +216,8 @@ export class SerialManager {
     }
 
     this.currentPort = null;
+
+    this.triggerEvent('disconnected');
 
     return true;
   }

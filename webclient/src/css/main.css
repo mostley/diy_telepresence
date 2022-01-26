@@ -66,14 +66,11 @@ main {
 .not-robot-only { display: flex; }
 .robot .not-robot-only { display: none; }
 
-.hide-if-not-robot { display: none; }
-.robot .hide-if-not-robot { display: flex; }
-
 .robot-connected-only { display: none; }
 .robot .robot-connected-only { display: flex; }
 
 .robot-not-connected-only { display: flex; }
-.robot .robot-not-connected-only { display: none; }
+.robot-connected .robot-not-connected-only { display: none; }
 
 .not-connected-only { display: flex; }
 .connected .not-connected-only { display: none; }

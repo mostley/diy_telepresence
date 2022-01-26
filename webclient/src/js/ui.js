@@ -13,7 +13,7 @@ export class UIManager extends EventBase {
     this.peerVideoElement = document.getElementById('peer-video-element');
     this.localVideoElement = document.getElementById('local-video-element');
 
-    this.connectButton = document.getElementById('connect-button');
+    this.connectRobotButton = document.getElementById('connect-robot-button');
     this.callButton = document.getElementById('call-button');
     this.hangupButton = document.getElementById('hangup-button');
     this.remotePanRightButton = document.getElementById('remote-pan-right-button');
@@ -43,8 +43,8 @@ export class UIManager extends EventBase {
       this.triggerEvent('username-changed', this.usernameInput.value);
     });
 
-    this.connectButton.addEventListener('click', () => {
-      this.triggerEvent('connect-clicked');
+    this.connectRobotButton.addEventListener('click', () => {
+      this.triggerEvent('connect-robot-button-clicked');
     });
 
     this.callButton.addEventListener('click', () => {
@@ -103,5 +103,13 @@ export class UIManager extends EventBase {
 
   showDisconnected() {
     document.body.classList.remove('connected');
+  }
+
+  showRobotConnected() {
+    document.body.classList.add('robot-connected');
+  }
+
+  showRobotDisconnected() {
+    document.body.classList.remove('robot-connected');
   }
 }
