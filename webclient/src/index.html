@@ -1,104 +1,48 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8" />
     <title>Telepresence</title>
     <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+    <script type="module" src="js/start.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/skeleton-css@2.0.4/css/normalize.css" />
+    <link rel="stylesheet" href="https://unpkg.com/skeleton-css@2.0.4/css/skeleton.css" />
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/main.css" />
   </head>
   <body>
-    <h1>Telepresence</h1>
-    <p>
-      <button id="connect-button">Connect Gimbal</button>
-      <button id="pan-left-button">left</button>
-      <button id="pan-right-button">right</button>
-      <span>Peer ID: </span>
-      <span id="peer-id-container">loading...</span>
-    </p>
-    <p>
-      <button id="call-button">Call</button>
-      <input id="peer-id-input" type="text" placeholder="Peer ID" />
-      <span>Username: </span>
-      <input id="username-input" type="text" placeholder="Username" />
-      <button id="remote-pan-left-button">left</button>
-      <button id="remote-pan-right-button">right</button>
-      <button id="remote-tilt-up-button">up</button>
-      <button id="remote-tilt-down-button">down</button>
-      <button id="hangup-button">hangup</button>
-    </p>
-    <div id="terminal" style="position: relative; width: 100%; height: 100%"></div>
-    <video id="peer-video-element" autoplay="autoplay"></video>
-    <video id="local-video-element" autoplay="autoplay" muted="true"></video>
+    <div class="peer-video-element-container">
+      <video id="peer-video-element" autoplay="autoplay"></video>
+    </div>
 
-    <script type="module">
-      import { ConnectionManager, MessageType } from './js/connect.js';
-      import { UIManager } from './js/ui.js';
-      import { SerialManager, CommandByteCode } from './js/serial.js';
-      import { generateShortLink } from './js/shortlink.js';
+    <div class="local-video-element-container">
+      <video id="local-video-element" autoplay="autoplay" muted="true"></video>
+    </div>
 
-      console.log('Starting Telepresence');
+    <main>
+      <section class="robotConnectionSetup"></section>
+      <section class="CallConnectionSetup"></section>
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const isRobotUser = urlParams.get('robot') === 'true';
-      document.body.classList.add('robot');
-
-      const connectionManager = new ConnectionManager();
-      const uiManager = new UIManager();
-
-      window.addEventListener('beforeunload', async () => {
-        await connectionManager.hangup();
-      });
-
-      connectionManager.init();
-      connectionManager.addEventListener('local-peer-id-received', (peerId) => {
-        uiManager.showPeerId(peerId);
-      });
-      connectionManager.addEventListener('local-stream-received', (stream) => {
-        uiManager.showLocalStream(stream);
-      });
-      connectionManager.addEventListener('remote-stream-received', (stream) => {
-        uiManager.showRemoteStream(stream);
-      });
-
-      uiManager.addEventListener('connect-button-clicked', () => serialManager.userRequestConnection());
-      uiManager.addEventListener('call-button-clicked', () => connectionManager.initiateCall());
-      uiManager.addEventListener('hangup-button-clicked', () => connectionManager.hangup());
-      uiManager.addEventListener('username-changed', (value) => connectionManager.setUsername(value));
-      uiManager.addEventListener('peer-id-changed', (value) => connectionManager.setPeerId(value));
-
-      if (isRobotUser) {
-        const serialManager = new SerialManager();
-        const connected = serialManager.tryConnect();
-        if (!connected) {
-          uiManager.showConnectDialog();
-        }
-
-        const messageToCommandMap = {
-          [MessageType.PanLeft]: CommandByteCode.PanLeft,
-          [MessageType.PanRight]: CommandByteCode.PanRight,
-          [MessageType.TiltUp]: CommandByteCode.TiltUp,
-          [MessageType.TiltDown]: CommandByteCode.TiltDown,
-        };
-        connectionManager.addEventListener('message-received', async (message) => {
-          const commandByteCode = messageToCommandMap[message];
-          if (commandByteCode) {
-            await serialManager.sendCommand(commandByteCode);
-          } else if (message == MessageType.Hangup) {
-            await connectionManager.hangup();
-          }
-        });
-      } else {
-        uiManager.addEventListener('remote-pan-left-button-clicked', () =>
-          connectionManager.sendMessage(MessageType.PanLeft)
-        );
-        uiManager.addEventListener('remote-pan-right-button-clicked', () =>
-          connectionManager.sendMessage(MessageType.PanRight)
-        );
-        uiManager.addEventListener('remote-tilt-up-button-clicked', () =>
-          connectionManager.sendMessage(MessageType.TiltUp)
-        );
-        uiManager.addEventListener('remote-tilt-down-button-clicked', () =>
-          connectionManager.sendMessage(MessageType.TiltDown)
-        );
-      }
-    </script>
+      <h1>Telepresence</h1>
+      <p>
+        <button id="connect-button">Connect Gimbal</button>
+        <button id="pan-left-button">left</button>
+        <button id="pan-right-button">right</button>
+        <span>Peer ID: </span>
+        <span id="peer-id-container">loading...</span>
+      </p>
+      <p>
+        <button id="call-button">Call</button>
+        <input id="peer-id-input" type="text" placeholder="Peer ID" />
+        <span>Username: </span>
+        <input id="username-input" type="text" placeholder="Username" />
+        <button id="remote-pan-left-button">left</button>
+        <button id="remote-pan-right-button">right</button>
+        <button id="remote-tilt-up-button">up</button>
+        <button id="remote-tilt-down-button">down</button>
+        <button id="hangup-button">hangup</button>
+      </p>
+    </main>
   </body>
 </html>

@@ -28,10 +28,11 @@ export class ConnectionManager extends EventBase {
   remoteTiltUpButton;
   remoteTiltDownButton;
 
-  constructor() {
+  constructor(localPeerId, remotePeerId) {
     super();
 
-    this.peer = new Peer();
+    this.peer = new Peer(localPeerId);
+    this.peerId = remotePeerId;
   }
 
   setUsername(username) {

@@ -1,7 +1,7 @@
 import { EventBase } from './event.js';
 
 export class UIManager extends EventBase {
-  constructor() {
+  constructor(localPeerId, remotePeerId, isRobot) {
     super();
 
     this.peerIdInput = document.getElementById('peer-id-input');
@@ -18,6 +18,13 @@ export class UIManager extends EventBase {
     this.remotePanLeftButton = document.getElementById('remote-pan-left-button');
     this.remoteTiltUpButton = document.getElementById('remote-tilt-up-button');
     this.remoteTiltDownButton = document.getElementById('remote-tilt-down-button');
+
+    this.peerIdContainer.innerHTML = localPeerId || 'loading...';
+    this.peerIdInput.value = remotePeerId;
+
+    if (isRobot) {
+      document.body.classList.add('robot');
+    }
 
     this.peerIdInput.addEventListener('keyup', () => {
       this.triggerEvent('peer-id-changed', this.peerIdInput.value);
@@ -55,8 +62,16 @@ export class UIManager extends EventBase {
     });
   }
 
-  showPeerId(peerId) {
+  showMyPeerId(peerId) {
     this.peerIdContainer.innerHTML = peerId;
+  }
+
+  setRemotePeerId(peerId) {
+    this.peerIdInput.value = peerId;
+  }
+
+  getRemotePeerId() {
+    return this.peerIdInput.value;
   }
 
   showConnectDialog() {
