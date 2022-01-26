@@ -7,3 +7,6 @@ Telepresence robot for one on one meetings
 * 2 Servo motors (e.g. HS-422)
 * some 3D printed parts
 * a smartphone with chrome or firefox installed
+
+# usage
+go to https://mostley.github.io/diy_telepresence/ to start

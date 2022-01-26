@@ -21,28 +21,62 @@
     </div>
 
     <main>
-      <section class="robotConnectionSetup"></section>
-      <section class="CallConnectionSetup"></section>
+      <section class="dialog-container robot-connection-setup">
+        <div class="dialog">
+          <button id="connect-button">Connect Gimbal</button>
+          <button id="pan-left-button">pan left</button>
+          <button id="pan-right-button">pan right</button>
+          <button id="tilt-up-button">tilt up</button>
+          <button id="tilt-down-button">tilt down</button>
+        </div>
+      </section>
 
-      <h1>Telepresence</h1>
-      <p>
-        <button id="connect-button">Connect Gimbal</button>
-        <button id="pan-left-button">left</button>
-        <button id="pan-right-button">right</button>
-        <span>Peer ID: </span>
-        <span id="peer-id-container">loading...</span>
-      </p>
-      <p>
-        <button id="call-button">Call</button>
-        <input id="peer-id-input" type="text" placeholder="Peer ID" />
-        <span>Username: </span>
-        <input id="username-input" type="text" placeholder="Username" />
-        <button id="remote-pan-left-button">left</button>
-        <button id="remote-pan-right-button">right</button>
-        <button id="remote-tilt-up-button">up</button>
-        <button id="remote-tilt-down-button">down</button>
-        <button id="hangup-button">hangup</button>
-      </p>
+      <section class="dialog-container call-connection-setup">
+        <div class="dialog">
+          <h2>Telepresence</h2>
+          <h6>Setup connection</h6>
+
+          <div class="mt-4">
+            <div class="row">
+              <span>Please give yourself a Name: </span>
+              <input id="username-input" type="text" placeholder="Username" />
+            </div>
+
+            <hr />
+
+            <div class="row">
+              <div class="one-half column border-right">
+                <span>send this URL to the remote participant: </span>
+                <div>
+                  <strong id="participant-url-container">loading...</strong>
+                </div>
+              </div>
+              <div class="one-half column">
+                <span>or paste the peerId of the Robot here:</span>
+                <input id="peer-id-input" type="text" placeholder="Peer ID" />
+                <button id="call-button">Call</button>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <span>your peer id is:</span>
+              <span id="peer-id-container">loading...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="remote-robot-controls">
+        <button class="remote-control-button pan-left-button" id="remote-pan-left-button">left</button>
+        <button class="remote-control-button pan-right-button" id="remote-pan-right-button">right</button>
+        <button class="remote-control-button tilt-up-button" id="remote-tilt-up-button">up</button>
+        <button class="remote-control-button tilt-down-button" id="remote-tilt-down-button">down</button>
+      </div>
+
+      <div class="connection-controls">
+        <button class="button-primary" id="mute-button">mute</button>
+        <button class="button-primary" id="hangup-button">hangup</button>
+      </div>
     </main>
   </body>
 </html>

@@ -2,7 +2,6 @@ import { ConnectionManager, MessageType } from './connect.js';
 import { UIManager } from './ui.js';
 import { SerialManager, CommandByteCode } from './serial.js';
 import { getURLParams, setURLParams } from './url.js';
-import { generateShortLink } from './shortlink.js';
 
 console.log('Starting Telepresence');
 
@@ -26,13 +25,19 @@ connectionManager.addEventListener('local-stream-received', (stream) => {
 connectionManager.addEventListener('remote-stream-received', (stream) => {
   uiManager.showRemoteStream(stream);
 });
+connectionManager.addEventListener('connected', () => {
+  uiManager.showConnected();
+});
 
 uiManager.addEventListener('call-button-clicked', () => {
   connectionManager.initiateCall();
   setURLParams({ remotePeerId: uiManager.getRemotePeerId() });
 });
 
-uiManager.addEventListener('hangup-button-clicked', () => connectionManager.hangup());
+uiManager.addEventListener('hangup-button-clicked', () => {
+  connectionManager.hangup();
+  uiManager.showDisconnected();
+});
 uiManager.addEventListener('username-changed', (value) => connectionManager.setUsername(value));
 uiManager.addEventListener('peer-id-changed', (value) => connectionManager.setPeerId(value));
 

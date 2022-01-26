@@ -79,6 +79,8 @@ export class ConnectionManager extends EventBase {
 
     var call = this.peer.call(this.peerId, this.localStream);
     this.setupCall(call);
+
+    this.triggerEvent('connected');
   }
 
   setupCall(call) {
@@ -99,6 +101,8 @@ export class ConnectionManager extends EventBase {
     call.answer(this.localStream);
 
     this.setupCall(call);
+
+    this.triggerEvent('connected');
   }
 
   onConnectionReceived(conn) {

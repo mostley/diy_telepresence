@@ -1,4 +1,5 @@
 import { EventBase } from './event.js';
+import { generateShortLink } from './shortlink.js';
 
 export class UIManager extends EventBase {
   constructor(localPeerId, remotePeerId, isRobot) {
@@ -8,6 +9,7 @@ export class UIManager extends EventBase {
     this.usernameInput = document.getElementById('username-input');
 
     this.peerIdContainer = document.getElementById('peer-id-container');
+    this.particpantUrlContainer = document.getElementById('participant-url-container');
     this.peerVideoElement = document.getElementById('peer-video-element');
     this.localVideoElement = document.getElementById('local-video-element');
 
@@ -21,6 +23,13 @@ export class UIManager extends EventBase {
 
     this.peerIdContainer.innerHTML = localPeerId || 'loading...';
     this.peerIdInput.value = remotePeerId;
+
+    generateShortLink(
+      `https://mostley.github.io/diy_telepresence/webclient/src/index.html?robot=${!isRobot}` +
+        `&remotePeerId=${localPeerId}`
+    ).then((url) => {
+      this.particpantUrlContainer.innerHTML = url;
+    });
 
     if (isRobot) {
       document.body.classList.add('robot');
@@ -86,5 +95,13 @@ export class UIManager extends EventBase {
   showRemoteStream(stream) {
     console.log('showRemoteStream');
     this.peerVideoElement.srcObject = stream;
+  }
+
+  showConnected() {
+    document.body.classList.add('connected');
+  }
+
+  showDisconnected() {
+    document.body.classList.remove('connected');
   }
 }
