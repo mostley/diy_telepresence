@@ -106,13 +106,14 @@ export class ConnectionManager extends EventBase {
   }
 
   onConnectionReceived(conn) {
-    console.log('[onConnectionReceived]');
+    console.log('[onConnectionReceived]', conn);
 
     this.connection = conn;
-    this.peerId = this.peer.id;
+    this.peerId = conn.peer;
     this.peerUsername = this.connection.metadata.username;
 
     this.connection.on('data', this.handleMessage.bind(this));
+    this.triggerEvent('remote-peer-id-received', this.peerId);
   }
 
   handleMessage(data) {

@@ -60,36 +60,26 @@ main {
   margin: 0.5em;
 }
 
-.connection-controls {
-  display: none;
-}
-.connected .connection-controls {
-  display: flex;
-}
+.robot-only { display: none; }
+.robot .robot-only { display: flex; }
 
-.dialog-container.call-connection-setup {
-  display: flex;
-}
-.connected .dialog-container.call-connection-setup {
-  display: none;
-}
-.remote-robot-controls {
-  display: none;
-}
-.connected .remote-robot-controls {
-  display: block;
-}
+.not-robot-only { display: flex; }
+.robot .not-robot-only { display: none; }
 
-.dialog-container.robot-connection-setup {
-  display: none;
-}
-.robot .dialog-container.robot-connection-setup {
-  display: flex;
-}
-.robot-connected .dialog-container.robot-connection-setup {
-  display: none;
-}
+.hide-if-not-robot { display: none; }
+.robot .hide-if-not-robot { display: flex; }
 
+.robot-connected-only { display: none; }
+.robot .robot-connected-only { display: flex; }
+
+.robot-not-connected-only { display: flex; }
+.robot .robot-not-connected-only { display: none; }
+
+.not-connected-only { display: flex; }
+.connected .not-connected-only { display: none; }
+
+.connected-only { display: none; }
+.connected .connected-only { display: flex; }
 
 .remote-control-button {
   position: absolute;
@@ -146,4 +136,8 @@ main {
 
 .border-right {
   border-right: 1px solid #ccc;
+}
+
+.small-print {
+  font-size: 0.8em;
 }

@@ -19,6 +19,10 @@ connectionManager.addEventListener('local-peer-id-received', (peerId) => {
   uiManager.showMyPeerId(peerId);
   setURLParams({ localPeerId: peerId });
 });
+connectionManager.addEventListener('remote-peer-id-received', (peerId) => {
+  uiManager.setRemotePeerId(peerId);
+  setURLParams({ remotePeerId: peerId });
+});
 connectionManager.addEventListener('local-stream-received', (stream) => {
   uiManager.showLocalStream(stream);
 });

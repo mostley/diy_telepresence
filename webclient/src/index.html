@@ -21,17 +21,7 @@
     </div>
 
     <main>
-      <section class="dialog-container robot-connection-setup">
-        <div class="dialog">
-          <button id="connect-button">Connect Gimbal</button>
-          <button id="pan-left-button">pan left</button>
-          <button id="pan-right-button">pan right</button>
-          <button id="tilt-up-button">tilt up</button>
-          <button id="tilt-down-button">tilt down</button>
-        </div>
-      </section>
-
-      <section class="dialog-container call-connection-setup">
+      <section class="dialog-container call-connection-setup not-connected-only">
         <div class="dialog">
           <h2>Telepresence</h2>
           <h6>Setup connection</h6>
@@ -46,19 +36,22 @@
 
             <div class="row">
               <div class="one-half column border-right">
-                <span>send this URL to the remote participant: </span>
+                <span class="robot-only">then send this URL to the remote Participant: </span>
+                <span class="not-robot-only">send this URL to the Robot: </span>
                 <div>
                   <strong id="participant-url-container">loading...</strong>
                 </div>
+                <span>The connection will the be established automatically.</span>
               </div>
               <div class="one-half column">
-                <span>or paste the peerId of the Robot here:</span>
+                <span class="not-robot-only">or paste the peerId of the Robot here:</span>
+                <span class="robot-only">or paste the peerId of the Participant here:</span>
                 <input id="peer-id-input" type="text" placeholder="Peer ID" />
                 <button id="call-button">Call</button>
               </div>
             </div>
             <hr />
-            <div class="row">
+            <div class="row small-print">
               <span>your peer id is:</span>
               <span id="peer-id-container">loading...</span>
             </div>
@@ -66,14 +59,26 @@
         </div>
       </section>
 
-      <div class="remote-robot-controls">
+      <section class="dialog-container robot-connection-setup robot-only not-robot-connected-only">
+        <div class="dialog">
+          <h2>Telepresence</h2>
+          <h6>Setup Robot</h6>
+          <button id="connect-button">Connect Gimbal</button>
+          <button id="pan-left-button">pan left</button>
+          <button id="pan-right-button">pan right</button>
+          <button id="tilt-up-button">tilt up</button>
+          <button id="tilt-down-button">tilt down</button>
+        </div>
+      </section>
+
+      <div class="remote-robot-controls connected-only not-robot-only">
         <button class="remote-control-button pan-left-button" id="remote-pan-left-button">left</button>
         <button class="remote-control-button pan-right-button" id="remote-pan-right-button">right</button>
         <button class="remote-control-button tilt-up-button" id="remote-tilt-up-button">up</button>
         <button class="remote-control-button tilt-down-button" id="remote-tilt-down-button">down</button>
       </div>
 
-      <div class="connection-controls">
+      <div class="connection-controls connected-only">
         <button class="button-primary" id="mute-button">mute</button>
         <button class="button-primary" id="hangup-button">hangup</button>
       </div>
