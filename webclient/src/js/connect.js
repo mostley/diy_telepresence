@@ -31,8 +31,21 @@ export class ConnectionManager extends EventBase {
   constructor(localPeerId, remotePeerId) {
     super();
 
-    this.peer = new Peer(localPeerId);
     this.peerId = remotePeerId;
+
+    this.peer = new Peer(localPeerId);
+    this.peer.on('open', () => {
+      console.log('[Open]');
+      this.triggerEvent('local-peer-id-received', this.peer.id);
+    });
+
+    this.peer.on('connection', this.onConnectionReceived.bind(this));
+
+    this.peer.on('error', (err) => {
+      alert(err);
+      console.error(err);
+    });
+    this.peer.on('call', this.onCallReceived.bind(this));
   }
 
   setUsername(username) {
@@ -48,19 +61,8 @@ export class ConnectionManager extends EventBase {
   }
 
   async init() {
+    console.log('[ConnectionManager] init');
     this.localStream = await this.requestLocalVideo();
-
-    this.peer.on('open', () => {
-      console.log('[Open]');
-      this.triggerEvent('local-peer-id-received', this.peer.id);
-    });
-
-    this.peer.on('connection', this.onConnectionReceived.bind(this));
-
-    this.peer.on('error', (err) => {
-      console.error(err);
-    });
-    this.peer.on('call', this.onCallReceived.bind(this));
   }
 
   async initiateCall() {
@@ -146,5 +148,13 @@ export class ConnectionManager extends EventBase {
     if (this.peerStream) {
       this.peerStream.getTracks().forEach((track) => track.stop());
     }
+  }
+
+  mute() {
+    this.localStream.getAudioTracks().forEach((track) => (track.enabled = false));
+  }
+
+  unmute() {
+    this.localStream.getAudioTracks().forEach((track) => (track.enabled = true));
   }
 }

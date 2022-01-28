@@ -2,8 +2,15 @@ import { EventBase } from './event.js';
 import { generateShortLink } from './shortlink.js';
 
 export class UIManager extends EventBase {
+  isRobot;
+  localPeerId;
+
   constructor(localPeerId, remotePeerId, isRobot) {
     super();
+
+    this.isRobot = isRobot;
+    this.localPeerId = localPeerId;
+    this.remotePeerId = remotePeerId;
 
     this.peerIdInput = document.getElementById('peer-id-input');
     this.usernameInput = document.getElementById('username-input');
@@ -15,6 +22,8 @@ export class UIManager extends EventBase {
 
     this.connectRobotButton = document.getElementById('connect-robot-button');
     this.callButton = document.getElementById('call-button');
+    this.unmuteButton = document.getElementById('unmute-button');
+    this.muteButton = document.getElementById('mute-button');
     this.hangupButton = document.getElementById('hangup-button');
     this.remotePanRightButton = document.getElementById('remote-pan-right-button');
     this.remotePanLeftButton = document.getElementById('remote-pan-left-button');
@@ -24,12 +33,11 @@ export class UIManager extends EventBase {
     this.peerIdContainer.innerHTML = localPeerId || 'loading...';
     this.peerIdInput.value = remotePeerId;
 
-    generateShortLink(
-      `https://mostley.github.io/diy_telepresence/webclient/src/index.html?robot=${!isRobot}` +
-        `&remotePeerId=${localPeerId}`
-    ).then((url) => {
-      this.particpantUrlContainer.innerHTML = url;
-    });
+    if (localPeerId) {
+      this.setLocalPeerId(localPeerId);
+    } else {
+      this.particpantUrlContainer.innerHTML = 'loading...';
+    }
 
     if (isRobot) {
       document.body.classList.add('robot');
@@ -49,6 +57,12 @@ export class UIManager extends EventBase {
 
     this.callButton.addEventListener('click', () => {
       this.triggerEvent('call-button-clicked');
+    });
+    this.unmuteButton.addEventListener('click', () => {
+      this.triggerEvent('unmute-button-clicked');
+    });
+    this.muteButton.addEventListener('click', () => {
+      this.triggerEvent('mute-button-clicked');
     });
     this.hangupButton.addEventListener('click', () => {
       this.triggerEvent('hangup-button-clicked');
@@ -71,11 +85,20 @@ export class UIManager extends EventBase {
     });
   }
 
-  showMyPeerId(peerId) {
+  setLocalPeerId(peerId) {
+    this.localPeerId = peerId;
     this.peerIdContainer.innerHTML = peerId;
+
+    generateShortLink(
+      `https://mostley.github.io/diy_telepresence/webclient/src/index.html?robot=${!this.isRobot}` +
+        `&remotePeerId=${this.localPeerId}`
+    ).then((url) => {
+      this.particpantUrlContainer.innerHTML = url;
+    });
   }
 
   setRemotePeerId(peerId) {
+    this.remotePeerId = peerId;
     this.peerIdInput.value = peerId;
   }
 
@@ -111,5 +134,13 @@ export class UIManager extends EventBase {
 
   showRobotDisconnected() {
     document.body.classList.remove('robot-connected');
+  }
+
+  showMuted() {
+    document.body.classList.add('muted');
+  }
+
+  showUnmuted() {
+    document.body.classList.remove('muted');
   }
 }

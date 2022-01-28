@@ -16,7 +16,7 @@ window.addEventListener('beforeunload', async () => {
 
 connectionManager.init();
 connectionManager.addEventListener('local-peer-id-received', (peerId) => {
-  uiManager.showMyPeerId(peerId);
+  uiManager.setLocalPeerId(peerId);
   setURLParams({ localPeerId: peerId });
 });
 connectionManager.addEventListener('remote-peer-id-received', (peerId) => {
@@ -38,6 +38,14 @@ uiManager.addEventListener('call-button-clicked', () => {
   setURLParams({ remotePeerId: uiManager.getRemotePeerId() });
 });
 
+uiManager.addEventListener('mute-button-clicked', () => {
+  connectionManager.mute();
+  uiManager.showMuted();
+});
+uiManager.addEventListener('unmute-button-clicked', () => {
+  connectionManager.unmute();
+  uiManager.showUnmuted();
+});
 uiManager.addEventListener('hangup-button-clicked', () => {
   connectionManager.hangup();
   uiManager.showDisconnected();
