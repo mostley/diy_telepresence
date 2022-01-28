@@ -116,14 +116,14 @@ void loop() {
   tiltAngle = lerp(tiltAngle, targetTiltAngle, t);
   lastMillis = now;
 
-  Serial.write("\r\ndt: ");
-  Serial.print(dt);
-  Serial.write("\r\nt: ");
-  Serial.print(t);
-  Serial.write("\r\nPan: ");
-  Serial.print(panAngle);
-  Serial.write("\r\nTilt: ");
-  Serial.print(tiltAngle);
+  /* Serial.write("\r\ndt: "); */
+  /* Serial.print(dt); */
+  /* Serial.write("\r\nt: "); */
+  /* Serial.print(t); */
+  /* Serial.write("\r\nPan: "); */
+  /* Serial.print(panAngle); */
+  /* Serial.write("\r\nTilt: "); */
+  /* Serial.print(tiltAngle); */
 
   /* if ((targetPanAngle - panAngle) > 0.5 || (targetTiltAngle - tiltAngle) > 0.5) { */
     panServo.write((int)panAngle);
