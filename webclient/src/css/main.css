@@ -75,6 +75,7 @@ main {
 .robot .robot-connected-only { display: none; }
 .robot .robot-connected-only { display: flex; }
 
+.dialog-container.robot-not-connected-only { display: none; }
 .robot .robot-not-connected-only { display: flex; }
 .robot-connected .robot-not-connected-only { display: none; }
 
